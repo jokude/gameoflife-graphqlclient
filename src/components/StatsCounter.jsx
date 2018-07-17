@@ -1,36 +1,40 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Text } from 'react-konva';
+import { Group, Text } from 'react-konva';
+import { FONT_COLOR, FONT_SIZE } from './styles';
 
-const StatsCounter = ({ total, births, deaths }) => (
-  <Fragment>
+const fontProps = {
+  fontSize: FONT_SIZE,
+  fill: FONT_COLOR
+};
+
+const StatsCounter = ({
+  y, total, births, deaths
+}) => (
+  <Group y={y}>
     <Text
       x={10}
       y={10}
       text={`Total: ${total}`}
-      fontSize={20}
-      fill="#555"
+      {...fontProps}
     />
     <Text
       x={210}
       y={10}
       text={`Births: ${births}`}
-      fontSize={20}
-      fill="#555"
-      align="center"
+      {...fontProps}
     />
     <Text
       x={410}
       y={10}
       text={`Deaths: ${deaths}`}
-      fontSize={20}
-      fill="#555"
-      align="center"
+      {...fontProps}
     />
-  </Fragment>
+  </Group>
 );
 
 StatsCounter.propTypes = {
+  y: PropTypes.number.isRequired,
   total: PropTypes.number.isRequired,
   births: PropTypes.number.isRequired,
   deaths: PropTypes.number.isRequired

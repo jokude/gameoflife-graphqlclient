@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Group } from 'react-konva';
-import { CELL_SIZE } from './constants';
+import { CELL_SIZE, GRID_NAME } from './constants';
+import {
+  CELL_LIVE_COLOR, CELL_BORDER_SIZE, PATTERN_BORDER_COLOR, TRANSPARENT_COLOR
+} from './styles';
 import Pattern from './Pattern';
 
 const snapAxisValue = axisValue => Math.round(axisValue / CELL_SIZE) * CELL_SIZE;
@@ -11,23 +14,42 @@ class PatternDraggable extends Component {
     super(props);
     this.pattern = null;
     this.shadowPattern = null;
+    this.stage = null;
+    this.container = null;
 
     this.dragStart = this.dragStart.bind(this);
     this.dragEnd = this.dragEnd.bind(this);
     this.dragMove = this.dragMove.bind(this);
+    this.onMouseEnter = this.onMouseEnter.bind(this);
+    this.onMouseLeave = this.onMouseLeave.bind(this);
   }
 
   componentDidMount() {
     this.stage = this.pattern.getStage();
+    this.container = this.stage.container();
     this.pattern.moveToTop();
   }
 
+  onMouseEnter() {
+    this.container.style.cursor = 'pointer';
+  }
+
+  onMouseLeave() {
+    this.container.style.cursor = 'default';
+  }
+
   getGridPosition() {
-    const pos = this.pattern.getAbsolutePosition();
+    const position = this.pattern.getAbsolutePosition();
     return this.pattern.getChildren().map((cell) => {
-      const x = (pos.x + cell.x()) / CELL_SIZE;
-      const y = (pos.y + cell.y()) / CELL_SIZE;
+      const x = (position.x + cell.x()) / CELL_SIZE;
+      const y = (position.y + cell.y()) / CELL_SIZE;
       return (x * 40) + y;
+    });
+  }
+
+  setPatternDraggingStyle() {
+    this.shadowPattern.children.toArray().forEach((cell) => {
+      cell.fill(TRANSPARENT_COLOR);
     });
   }
 
@@ -38,19 +60,32 @@ class PatternDraggable extends Component {
     });
   }
 
+  patternIsOverGrid() {
+    const {
+      x, y, width, height
+    } = this.shadowPattern.getClientRect();
+    const grid = this.stage.findOne(`.${GRID_NAME}`).getClientRect();
+
+    return x >= 0 && x + width <= grid.width && y >= 0 && y + height <= grid.height;
+  }
+
   dragStart() {
-    this.shadowPattern.show();
+    this.setPatternDraggingStyle();
     this.shadowPattern.moveToTop();
     this.pattern.moveToTop();
   }
 
   dragEnd() {
-    const { put, x, y } = this.props;
+    const { put } = this.props;
+
     this.snapToGrid(this.pattern);
+    if (this.patternIsOverGrid()) {
+      put(this.getGridPosition());
+    }
+
     this.stage.batchDraw();
-    this.shadowPattern.hide();
-    put(this.getGridPosition());
-    this.pattern.position({ x, y });
+    this.shadowPattern.position({ x: 0, y: 0 });
+    this.pattern.position({ x: 0, y: 0 });
   }
 
   dragMove() {
@@ -59,35 +94,29 @@ class PatternDraggable extends Component {
   }
 
   render() {
-    const { x, y, cells } = this.props;
+    const { y, cells } = this.props;
     return (
-      <Group x={x} y={y}>
+      <Group
+        y={y}
+        onMouseEnter={this.onMouseEnter}
+        onMouseLeave={this.onMouseLeave}
+      >
         <Pattern
+          opacity={0}
           pattern={cells}
           getRef={(ref) => { this.pattern = ref; }}
           draggable
           onDragstart={this.dragStart}
           onDragend={this.dragEnd}
           onDragmove={this.dragMove}
-          rectStyle={{
-            fill: '#fff',
-            stroke: '#ddd',
-            strokeWidth: 1,
-            shadowColor: 'black',
-            shadowBlur: 2,
-            shadowOffset: { x: 1, y: 1 },
-            shadowOpacity: 0.4
-          }}
         />
         <Pattern
           pattern={cells}
           getRef={(ref) => { this.shadowPattern = ref; }}
           rectStyle={{
-            fill: '#FF7B17',
-            opacity: 0.6,
-            stroke: '#CF6412',
-            strokeWidth: 3,
-            dash: [20, 2]
+            fill: CELL_LIVE_COLOR,
+            stroke: PATTERN_BORDER_COLOR,
+            strokeWidth: CELL_BORDER_SIZE
           }}
         />
       </Group>
@@ -96,9 +125,8 @@ class PatternDraggable extends Component {
 }
 
 PatternDraggable.propTypes = {
-  x: PropTypes.number.isRequired,
   y: PropTypes.number.isRequired,
-  cells: PropTypes.arrayOf(PropTypes.bool).isRequired,
+  cells: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.bool)).isRequired,
   put: PropTypes.func.isRequired
 };
 

@@ -21,6 +21,7 @@ class Pattern extends Component {
         {pattern.map((row, rowIndex) => row.map((active, columnIndex) => (
           active ? (
             <Rect
+              key={`pattern-${rowIndex}-${columnIndex}`}
               x={rowIndex * CELL_SIZE}
               y={columnIndex * CELL_SIZE}
               width={CELL_SIZE}

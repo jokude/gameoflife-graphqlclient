@@ -1,8 +1,9 @@
 import React from 'react';
 import { Mutation } from 'react-apollo';
-import { getBoard, putPattern } from '../queries';
+import deepmerge from 'deepmerge';
+import { getBoard, putPattern } from '../apollo/schema.gql';
+import { base64toMap, mapToBase64 } from '../helpers';
 import PatternDraggable from './PatternDraggable';
-import { boardFromBase64, chunkArray } from '../helpers';
 
 const mutation = props => (
   <Mutation mutation={putPattern}>
@@ -10,30 +11,27 @@ const mutation = props => (
       <PatternDraggable
         {...props}
         put={(positions) => {
-          // console.log(positions);
           mutate({
             variables: { positions },
             update: (store) => {
-              // console.log(store, data);
-
-              const data = store.readQuery({ query: getBoard });
-              const boardData = boardFromBase64(data.board.base64);
+              const cellNumber = positions.length;
+              const queryData = store.readQuery({ query: getBoard });
+              const { board: { base64, total, births } } = queryData;
+              const boardData = base64toMap(base64);
               positions.forEach((position) => { boardData[position] = true; });
-              // positions.forEach(positions => row.forEach(cell => ));
-              // store.writeQuery({ query: getBoard, data });
-
-              console.log(boardData);
-
-              /* // Read the data from our cache for this query.
-            const data = store.readQuery({ query: CommentAppQuery });
-            // Add our comment from the mutation to the end.
-            data.comments.push(submitComment);
-            // Write our data back to the cache.
-            store.writeQuery({ query: CommentAppQuery, data }); */
+              store.writeQuery({
+                query: getBoard,
+                data: deepmerge(queryData, {
+                  board: {
+                    base64: mapToBase64(boardData),
+                    total: total + cellNumber,
+                    births: births + cellNumber
+                  }
+                })
+              });
             }
           });
-        }
-      }
+        }}
       />
     )}
   </Mutation>

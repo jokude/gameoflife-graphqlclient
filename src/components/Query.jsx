@@ -1,8 +1,8 @@
 import React from 'react';
 import { Query } from 'react-apollo';
 import deepmerge from 'deepmerge';
-import { getBoard, getMessages } from '../queries';
-import { boardFromBase64, chunkArray } from '../helpers';
+import { getBoard, getBoardUpdate } from '../apollo/schema.gql';
+import { base64toMap, chunkArray } from '../helpers';
 import Board from './Board';
 
 export default () => (
@@ -16,7 +16,7 @@ export default () => (
       const {
         base64, total, births, deaths
       } = data.board;
-      const boardData = boardFromBase64(base64);
+      const boardData = base64toMap(base64);
       const grid = chunkArray(boardData, 40);
       return (
         <Board
@@ -25,17 +25,14 @@ export default () => (
           births={births}
           deaths={deaths}
           updates={() => subscribeToMore({
-            document: getMessages,
+            document: getBoardUpdate,
             updateQuery: (prev, { subscriptionData }) => {
               if (!subscriptionData.data) return prev;
               return deepmerge(prev, {
-                board: {
-                  base64: subscriptionData.data.boardUpdated.base64
-                }
+                board: subscriptionData.data.boardUpdated
               });
             }
-          })
-          }
+          })}
         />
       );
     }}
