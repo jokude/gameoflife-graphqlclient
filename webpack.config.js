@@ -10,13 +10,12 @@ module.exports = {
     port: 8080,
     host: '0.0.0.0',
     public: 'localhost',
-    historyApiFallback: true,
     contentBase: './build',
     index: './src/index.html'
   },
 
   entry: {
-    index: path.resolve(__dirname, './src/index.js'),
+    index: path.resolve(__dirname, './src/index.js')
   },
 
   output: {
@@ -32,8 +31,9 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
-        test: /\.scss$/,
-        loaders: ['style-loader', 'css-loader', 'sass-loader']
+        test: /\.(graphql|gql)$/,
+        exclude: /node_modules/,
+        loader: 'graphql-tag/loader'
       }
     ]
   },
@@ -42,7 +42,7 @@ module.exports = {
     modules: [
       resolve('./node_modules')
     ],
-    extensions: ['.js', '.jsx'],
+    extensions: ['.js', '.jsx']
   },
 
   plugins: [

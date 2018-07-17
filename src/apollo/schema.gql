@@ -1,0 +1,22 @@
+fragment boardFragment on BoardState {
+  base64
+  total
+  births
+  deaths
+}
+  
+query getBoard {
+  board {
+    ...boardFragment
+  }
+}
+
+mutation putPattern($positions: [Int]) {
+  putPattern(positions: $positions)
+}
+
+subscription getBoardUpdate {
+  boardUpdated {
+    ...boardFragment
+  }
+}
