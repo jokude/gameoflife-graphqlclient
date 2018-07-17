@@ -1,15 +1,16 @@
 {
-  "name": "client",
+  "name": "gameoflife-grapqhlclient",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Game of Life using Grapqhl",
+  "main": "build/bundle.js",
   "scripts": {
     "build": "webpack",
     "eslint": "eslint --ignore-path .gitignore ./src",
-    "start:dev": "webpack-dev-server --mode development"
+    "start:dev": "webpack-dev-server --mode development",
+    "start:prod": "http-server build"
   },
   "author": "Richard Hidalgo",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "apollo-cache-inmemory": "^1.2.5",
     "apollo-client": "^2.3.5",
@@ -38,13 +39,11 @@
     "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "css-loader": "^0.28.11",
     "eslint-config-airbnb": "^17.0.0",
+    "life-game": "^1.0.75",
     "node-sass": "^4.9.0",
     "parcel-bundler": "^1.9.2",
     "prop-types": "^15.6.2",
-    "sass-loader": "^7.0.3",
-    "style-loader": "^0.21.0",
     "webpack": "^4.12.1",
     "webpack-cli": "^3.0.8",
     "webpack-dev-server": "^3.1.4"
