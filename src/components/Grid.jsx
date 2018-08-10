@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Group, Rect } from 'react-konva';
-import { CELL_SIZE, GRID_NAME } from './constants';
+import { Rect } from 'react-konva';
 import {
-  CELL_LIVE_COLOR, CELL_EMPTY_COLOR, CELL_BORDER_COLOR, CELL_BORDER_SIZE
-} from './styles';
+  CELL_SIZE, CELL_LIVE_COLOR, CELL_EMPTY_COLOR, CELL_BORDER_COLOR, CELL_BORDER_SIZE
+} from './constants';
 
 const Grid = ({ grid }) => (
-  <Group name={GRID_NAME}>
+  <Fragment>
     {
       grid.map((row, rowIndex) => row.map((live, columnIndex) => (
         <Rect
@@ -22,7 +21,7 @@ const Grid = ({ grid }) => (
         />
       )))
   }
-  </Group>
+  </Fragment>
 
 );
 
