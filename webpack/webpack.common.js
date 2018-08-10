@@ -1,5 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const resolve = location => path.resolve(__dirname, location);
 
@@ -11,16 +12,25 @@ module.exports = {
     host: '0.0.0.0',
     public: 'localhost',
     contentBase: './build',
-    index: './src/index.html'
+    index: '../src/index.html'
   },
 
+  target: 'web',
+
   entry: {
-    index: path.resolve(__dirname, './src/index.js')
+    index: resolve('../src/index.js')
   },
 
   output: {
-    path: path.resolve(__dirname, 'build'),
+    path: resolve('../build'),
     filename: 'bundle.js'
+  },
+
+  node: {
+    console: false,
+    process: false,
+    setImmediate: false,
+    __filename: false
   },
 
   module: {
@@ -40,7 +50,7 @@ module.exports = {
 
   resolve: {
     modules: [
-      resolve('./node_modules')
+      resolve('../node_modules')
     ],
     extensions: ['.js', '.jsx']
   },
@@ -49,6 +59,9 @@ module.exports = {
     new webpack.LoaderOptionsPlugin({
       debug: true
     }),
-    new webpack.HotModuleReplacementPlugin()
+    new HtmlWebpackPlugin({
+      title: 'Game of Life - Grapqhl',
+      template: resolve('../src/layout/index.html')
+    })
   ]
 };
