@@ -1,10 +1,9 @@
 import React from 'react';
 import { Stage } from 'react-konva';
-import { CELL_SIZE } from './constants';
-import Query from './Query';
+import { CELL_SIZE, BOARD_SIZE } from './constants';
+import Board from './Board';
 import PatternMenu from './PatternMenu';
 
-const BOARD_SIZE = 40;
 const BOARD_WIDTH = CELL_SIZE * BOARD_SIZE;
 const BOARD_HEIGHT = CELL_SIZE * BOARD_SIZE;
 const COUNTER_HEIGHT = 30;
@@ -14,7 +13,7 @@ const Base = () => (
     width={BOARD_WIDTH + 120}
     height={BOARD_HEIGHT + COUNTER_HEIGHT}
   >
-    <Query />
+    <Board />
     <PatternMenu />
   </Stage>
 );

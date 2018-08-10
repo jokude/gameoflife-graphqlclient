@@ -1,38 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { Layer } from 'react-konva';
-import { CELL_SIZE } from './constants';
+import { FastLayer } from 'react-konva';
+import withBoardQuery from '../hocs/withBoardQuery';
+import { CELL_SIZE, BOARD_SIZE, GRID_NAME } from './constants';
 import Grid from './Grid';
+
 import StatsCounter from './StatsCounter';
 
-const BOARD_SIZE = 40;
 const BOARD_HEIGHT = CELL_SIZE * BOARD_SIZE;
 
-class Board extends Component {
-  componentDidMount() {
-    const { updates } = this.props;
-    updates();
-  }
-
-  render() {
-    const {
-      grid, total, births, deaths
-    } = this.props;
-    return (
-      <Layer>
-        <Grid grid={grid} />
-        <StatsCounter y={BOARD_HEIGHT} total={total} births={births} deaths={deaths} />
-      </Layer>
-    );
-  }
-}
+const Board = ({
+  grid, total, births, deaths
+}) => (
+  <FastLayer name={GRID_NAME}>
+    <Grid grid={grid} />
+    <StatsCounter y={BOARD_HEIGHT} total={total} births={births} deaths={deaths} />
+  </FastLayer>
+);
 
 Board.propTypes = {
-  grid: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.bool)).isRequired,
-  total: PropTypes.number.isRequired,
-  births: PropTypes.number.isRequired,
-  deaths: PropTypes.number.isRequired,
-  updates: PropTypes.func.isRequired
+  grid: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.bool)),
+  total: PropTypes.number,
+  births: PropTypes.number,
+  deaths: PropTypes.number
 };
 
-export default Board;
+Board.defaultProps = {
+  grid: Array(BOARD_SIZE).fill(Array(BOARD_SIZE).fill(false)),
+  total: 0,
+  births: 0,
+  deaths: 0
+};
+
+export default withBoardQuery(Board);
