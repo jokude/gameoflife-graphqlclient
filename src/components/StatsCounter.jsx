@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { Group, Text } from 'react-konva';
-import { FONT_COLOR, FONT_SIZE } from './styles';
+import { Text } from 'react-konva';
+import { FONT_COLOR, FONT_SIZE } from './constants';
 
 const fontProps = {
   fontSize: FONT_SIZE,
@@ -11,26 +11,26 @@ const fontProps = {
 const StatsCounter = ({
   y, total, births, deaths
 }) => (
-  <Group y={y}>
+  <Fragment>
     <Text
       x={10}
-      y={10}
+      y={y + 10}
       text={`Total: ${total}`}
       {...fontProps}
     />
     <Text
       x={210}
-      y={10}
+      y={y + 10}
       text={`Births: ${births}`}
       {...fontProps}
     />
     <Text
       x={410}
-      y={10}
+      y={y + 10}
       text={`Deaths: ${deaths}`}
       {...fontProps}
     />
-  </Group>
+  </Fragment>
 );
 
 StatsCounter.propTypes = {
