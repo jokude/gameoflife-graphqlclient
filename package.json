@@ -1,13 +1,15 @@
 {
   "name": "gameoflife-grapqhlclient",
   "version": "1.0.0",
-  "description": "Game of Life using Grapqhl",
+  "description": "Game of Life Client using Grapqhl",
   "main": "build/bundle.js",
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --config=webpack/webpack.production.js",
+    "build:dev": "webpack --config=webpack/webpack.development.js",
     "eslint": "eslint --ignore-path .gitignore ./src",
-    "start:dev": "webpack-dev-server --mode development",
-    "start:prod": "http-server build"
+    "start:dev": "npm run build:dev && http-server build",
+    "start:prod": "npm run build && http-server build",
+    "analyze:prod": " webpack --config=webpack/webpack.production.js --json > ./build/stats.json && webpack-bundle-analyzer ./build/stats.json"
   },
   "author": "Richard Hidalgo",
   "license": "MIT",
@@ -18,7 +20,6 @@
     "apollo-link-http": "^1.5.4",
     "apollo-link-ws": "^1.0.8",
     "apollo-utilities": "^1.0.16",
-    "buffer": "^5.1.0",
     "deepmerge": "^2.1.1",
     "eslint": "^5.1.0",
     "eslint-plugin-import": "^2.13.0",
@@ -41,10 +42,14 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
     "eslint-config-airbnb": "^17.0.0",
+    "html-webpack-plugin": "^3.2.0",
     "life-game": "^1.0.75",
     "prop-types": "^15.6.2",
+    "uglifyjs-webpack-plugin": "^1.2.7",
     "webpack": "^4.16.1",
+    "webpack-bundle-analyzer": "^2.13.1",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.4"
+    "webpack-dev-server": "^3.1.4",
+    "webpack-merge": "^4.1.3"
   }
 }
