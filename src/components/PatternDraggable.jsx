@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Group } from 'react-konva';
-import { CELL_SIZE, GRID_NAME } from './constants';
-import {
-  CELL_LIVE_COLOR, CELL_BORDER_SIZE, PATTERN_BORDER_COLOR, TRANSPARENT_COLOR
-} from './styles';
 import Pattern from './Pattern';
+import withBoardMutation from '../hocs/withBoardMutation';
+import {
+  CELL_SIZE,
+  GRID_NAME,
+  BOARD_SIZE,
+  CELL_LIVE_COLOR,
+  CELL_BORDER_SIZE,
+  PATTERN_BORDER_COLOR,
+  TRANSPARENT_COLOR
+} from './constants';
 
 const snapAxisValue = axisValue => Math.round(axisValue / CELL_SIZE) * CELL_SIZE;
 
@@ -40,10 +46,11 @@ class PatternDraggable extends Component {
 
   getGridPosition() {
     const position = this.pattern.getAbsolutePosition();
+
     return this.pattern.getChildren().map((cell) => {
       const x = (position.x + cell.x()) / CELL_SIZE;
       const y = (position.y + cell.y()) / CELL_SIZE;
-      return (x * 40) + y;
+      return (x * BOARD_SIZE) + y;
     });
   }
 
@@ -76,11 +83,11 @@ class PatternDraggable extends Component {
   }
 
   dragEnd() {
-    const { put } = this.props;
+    const { setPositions } = this.props;
 
     this.snapToGrid(this.pattern);
     if (this.patternIsOverGrid()) {
-      put(this.getGridPosition());
+      setPositions(this.getGridPosition());
     }
 
     this.stage.batchDraw();
@@ -127,7 +134,7 @@ class PatternDraggable extends Component {
 PatternDraggable.propTypes = {
   y: PropTypes.number.isRequired,
   cells: PropTypes.arrayOf(PropTypes.arrayOf(PropTypes.bool)).isRequired,
-  put: PropTypes.func.isRequired
+  setPositions: PropTypes.func.isRequired
 };
 
-export default PatternDraggable;
+export default withBoardMutation(PatternDraggable);
