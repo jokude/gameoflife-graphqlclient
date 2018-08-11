@@ -9,7 +9,8 @@
     "eslint": "eslint --ignore-path .gitignore ./src",
     "start:dev": "npm run build:dev && http-server build",
     "start:prod": "npm run build && http-server build",
-    "analyze:prod": " webpack --config=webpack/webpack.production.js --json > ./build/stats.json && webpack-bundle-analyzer ./build/stats.json"
+    "analyze:prod": " webpack --config=webpack/webpack.production.js --json > ./build/stats.json && webpack-bundle-analyzer ./build/stats.json",
+    "deploy-gh-pages": "sh scripts/deploy-gh-pages"
   },
   "author": "Richard Hidalgo",
   "license": "MIT",
