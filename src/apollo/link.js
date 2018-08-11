@@ -3,15 +3,14 @@ import { createHttpLink } from 'apollo-link-http';
 import { WebSocketLink } from 'apollo-link-ws';
 import { getMainDefinition } from 'apollo-utilities';
 
-const host = `${GRAPHQL_HOST}:${GRAPHQL_PORT}`;
 const isSecure = SECURE_CONNECTION ? 's' : '';
 
 const httpLink = createHttpLink({
-  uri: `http${isSecure}://${host}/graphql`
+  uri: `http${isSecure}://${GRAPHQL_HOST}/graphql`
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws${isSecure}://${host}/subscriptions`,
+  uri: `ws${isSecure}://${GRAPHQL_HOST}/subscriptions`,
   options: {
     reconnect: true
   }

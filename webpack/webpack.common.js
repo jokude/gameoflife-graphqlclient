@@ -55,8 +55,7 @@ module.exports = {
       template: resolve('../src/layout/index.html')
     }),
     new webpack.DefinePlugin({
-      "GRAPHQL_HOST": JSON.stringify(process.env.HOST || 'localhost'),
-      "GRAPHQL_PORT": JSON.stringify(process.env.PORT || 3000),
+      "GRAPHQL_HOST": JSON.stringify(process.env.HOST || 'localhost:3000'),
       "SECURE_CONNECTION": JSON.stringify(process.env.SECURE || false)
     })
   ]
