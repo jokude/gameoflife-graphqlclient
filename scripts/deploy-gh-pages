@@ -4,6 +4,6 @@ mkdir dist
 git worktree prune
 rm -rf .git/worktrees/dist/
 git worktree add -B gh-pages dist origin/gh-pages
-npm run build -- --output-path dist
+HOST=jokude.herokuapp.com SECURE=true npm run build -- --output-path dist
 cd dist && git add --all && git commit -m "Publishing to gh-pages" && cd ..
 git push origin gh-pages --force
