@@ -6,5 +6,10 @@
   },
   "env": {
     "browser": true
+  },
+  "globals": {
+    "GRAPHQL_HOST": false,
+    "GRAPHQL_PORT": false,
+    "SECURE_CONNECTION": false
   }
 }

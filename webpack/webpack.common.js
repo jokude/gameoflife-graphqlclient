@@ -6,15 +6,6 @@ const resolve = location => path.resolve(__dirname, location);
 
 module.exports = {
 
-  devServer: {
-    hot: true,
-    port: 8080,
-    host: '0.0.0.0',
-    public: 'localhost',
-    contentBase: './build',
-    index: '../src/index.html'
-  },
-
   target: 'web',
 
   entry: {
@@ -62,6 +53,11 @@ module.exports = {
     new HtmlWebpackPlugin({
       title: 'Game of Life - Grapqhl',
       template: resolve('../src/layout/index.html')
+    }),
+    new webpack.DefinePlugin({
+      "GRAPHQL_HOST": JSON.stringify(process.env.HOST || 'localhost'),
+      "GRAPHQL_PORT": JSON.stringify(process.env.PORT || 3000),
+      "SECURE_CONNECTION": JSON.stringify(process.env.SECURE || false)
     })
   ]
 };
