@@ -27,7 +27,10 @@ export default graphql(getBoard, {
     return {
       loading,
       error,
-      grid: chunkArray(base64toMap(board.base64), BOARD_SIZE)
+      grid: chunkArray(base64toMap(board.base64), BOARD_SIZE),
+      total: board.total,
+      births: board.births,
+      deaths: board.deaths
     };
   }
 });
