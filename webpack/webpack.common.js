@@ -52,11 +52,15 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       title: 'Game of Life - Grapqhl',
-      template: resolve('../src/layout/index.html')
+      favicon: resolve('../src/assets/favicon.png'),
+      template: resolve('../src/layout/index.html'),
+      minify: {
+        collapseWhitespace: true
+      }
     }),
     new webpack.DefinePlugin({
-      "GRAPHQL_HOST": JSON.stringify(process.env.HOST || 'localhost:3000'),
-      "SECURE_CONNECTION": JSON.stringify(process.env.SECURE || false)
+      GRAPHQL_HOST: JSON.stringify(process.env.HOST || 'localhost:3000'),
+      SECURE_CONNECTION: JSON.stringify(process.env.SECURE || false)
     })
   ]
 };
