@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FastLayer } from 'react-konva';
 import withBoardQuery from '../hocs/withBoardQuery';
-import { CELL_SIZE, BOARD_SIZE, GRID_NAME } from './constants';
+import { CELL_SIZE, BOARD_SIZE, GRID_NAME, BOARD_OFFSET } from './constants';
 import Grid from './Grid';
 
 import StatsCounter from './StatsCounter';
@@ -12,7 +12,7 @@ const BOARD_HEIGHT = CELL_SIZE * BOARD_SIZE;
 const Board = ({
   grid, total, births, deaths
 }) => (
-  <FastLayer name={GRID_NAME}>
+  <FastLayer x={BOARD_OFFSET} y={BOARD_OFFSET} name={GRID_NAME}>
     <Grid grid={grid} />
     <StatsCounter y={BOARD_HEIGHT} total={total} births={births} deaths={deaths} />
   </FastLayer>

@@ -5,6 +5,7 @@ export const GRID_NAME = 'board-grid';
 export const CELL_SIZE = 20;
 export const BOARD_SIZE = 40;
 export const CELL_BORDER_SIZE = 4;
+export const BOARD_OFFSET = 2;
 
 // Font
 export const FONT_SIZE = 20;

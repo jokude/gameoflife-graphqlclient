@@ -10,10 +10,11 @@ import {
   CELL_LIVE_COLOR,
   CELL_BORDER_SIZE,
   PATTERN_BORDER_COLOR,
-  TRANSPARENT_COLOR
+  TRANSPARENT_COLOR,
+  BOARD_OFFSET
 } from './constants';
 
-const snapAxisValue = axisValue => Math.round(axisValue / CELL_SIZE) * CELL_SIZE;
+const snapAxisValue = axisValue => Math.round(axisValue / CELL_SIZE) * CELL_SIZE + 2;
 
 class PatternDraggable extends Component {
   constructor(props) {
@@ -46,10 +47,12 @@ class PatternDraggable extends Component {
 
   getGridPosition() {
     const position = this.pattern.getAbsolutePosition();
+    const px = position.x - BOARD_OFFSET;
+    const py = position.y - BOARD_OFFSET;
 
     return this.pattern.getChildren().map((cell) => {
-      const x = (position.x + cell.x()) / CELL_SIZE;
-      const y = (position.y + cell.y()) / CELL_SIZE;
+      const x = (px + cell.x()) / CELL_SIZE;
+      const y = (py + cell.y()) / CELL_SIZE;
       return (x * BOARD_SIZE) + y;
     });
   }
